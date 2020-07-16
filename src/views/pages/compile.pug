@@ -1,0 +1,22 @@
+extends ../layout.pug
+
+block compile
+
+    .row
+        .col-md-9.push-big
+            .card
+                .card-body
+
+        .col-md-3.push-big
+            .card
+                .card-header 
+                    b Upload custom .inc
+                ul.list-group.list-group-flush
+                    li.list-group-item
+                        form
+                            .form-group
+                                label(for='exampleFormControlFile1') .inc files
+                                input#exampleFormControlFile1.form-control-file(type='file', accept=".inc")
+
+
+

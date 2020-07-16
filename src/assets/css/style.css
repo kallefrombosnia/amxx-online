@@ -1,0 +1,24 @@
+.logo{
+    height: 32px;
+    width: 32px;
+}
+
+.nav-link{
+    font-weight: 600;
+}
+
+.card-body{
+    background-color: #f8f9fa;
+}
+
+.push-small{
+    margin-top: 20px;
+}
+
+.push-big{
+    margin-top: 60px;
+}
+
+.button-grupa{
+    margin: 5px;
+}
