@@ -10,13 +10,32 @@ block compile
         .col-md-3.push-big
             .card
                 .card-header 
+                    b Upload source file - .sma
+                ul.list-group.list-group-flush
+                    li.list-group-item
+                        form
+                            .form-group
+                                label(for='exampleFormControlFile1') .sma files
+                                input#smaFile.form-control-file(type='file', accept=".sma")
+
+        .col-md-9.push-big
+        
+        .col-md-3.push-big
+            .card
+                .card-header 
                     b Upload custom .inc
                 ul.list-group.list-group-flush
                     li.list-group-item
                         form
                             .form-group
                                 label(for='exampleFormControlFile1') .inc files
-                                input#exampleFormControlFile1.form-control-file(type='file', accept=".inc")
+                                input#incFile.form-control-file(type='file', accept=".inc")
+                                button.btn.btn-success.push-small.btn-sm.incCacheButton(type='button', style='display:none;') Cache .inc
+
+                                h6.push-small Cached includes: 
+
+                                ul#cachedIncList.list-group.list-group-flush
+                                 
 
 
 
