@@ -5,6 +5,7 @@
 
 .nav-link{
     font-weight: 600;
+    color: #dee2e6;
 }
 
 .card-body{
@@ -21,4 +22,27 @@
 
 .button-grupa{
     margin: 5px;
+}
+
+.incItem{
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.action-button{
+    margin-right: 5px;
+}
+
+.editorName{
+    border: 1px solid transparent; 
+    padding: 1px;
+}
+
+.editorNameInput{
+   width: 30px;
+}
+
+.editors-list{
+    font-weight: 600;
+    color: #007bff !important;
 }
