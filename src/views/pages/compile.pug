@@ -1,20 +1,32 @@
 extends ../layout.pug
 
+append head
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/codemirror.min.css")
+    link(rel="stylesheet", href="http://codemirror.net/theme/duotone-light.css")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/codemirror.min.js")
+    script(src="http://codemirror.net/mode/perl/perl.js")
+    script(src="https://codemirror.net/addon/display/autorefresh.js")
+    script(src="assets/js/compiler.js")
+
 block compile
 
     .row
         .col-md-12 
             .messages
         .col-md-12.push-big
-            button.btn.btn-success.action-button.btn-sm(type='button')
+            button.btn.btn-success.action-button.btn-sm(type='button', id="openEditorInputButton")
                 i.fa.fa-plus(aria-hidden='true') 
                     |  New
-            button.btn.btn-info.btn-sm(type='button') 
+            button.btn.btn-info.action-button.btn-sm(type='button') 
                 i.fa.fa-download(aria-hidden='true')
                     |  Import
+            button.btn.btn-download.btn-sm(type='button', id="saveFile") 
+                i.fas.fa-save(aria-hidden='true')
+                    |  Save
             button.btn.btn-warning.float-right.disabled.btn-sm(type='button') 
                 i.fa.fa-cogs(aria-hidden='true')
                     |  Compile
+
 
             #newFileModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                 .modal-dialog(role='document')
@@ -36,7 +48,7 @@ block compile
         .col-md-9.push-small
             ul#editorsList.nav.nav-tabs(role='tablist')
                 li.nav-item
-                    a.nav-link.active(id='plugin-tab', data-toggle='tab', href='#plugin-default') plugin.sma
+                    a.nav-link.active(id='plugin-default-tab', data-toggle='tab', href='#plugin-default') plugin.sma
                 li.nav-item#createNewInput
                     a#openEditorInput.nav-link
                         i.fa.fa-plus(aria-hidden='true') 
@@ -44,7 +56,7 @@ block compile
             #editorsAll.tab-content
                 #plugin-default.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='plugin-tab')
                     .card
-                        .card-body#editor
+                        .card-body#plugin-default-editor
 
 
         .col-md-3.push-small
