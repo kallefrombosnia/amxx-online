@@ -17,6 +17,9 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// json format output
+app.set('json spaces', 2)
+
 // Set rendering enginel current pugjs
 app.set('view engine', 'pug');
 
@@ -30,6 +33,12 @@ app.use(require('./routes/public/dashboardRouter'));
 
 // Use compile route handler
 app.use(require('./routes/public/compileRouter'));
+
+// Use docs route handler
+app.use(require('./routes/public/docsRouter'));
+
+// Use docs route handler
+app.use(require('./routes/public/apiRouter'));
 
 // Start app and listen on web port
 app.listen(config.WEB_PORT, () =>{

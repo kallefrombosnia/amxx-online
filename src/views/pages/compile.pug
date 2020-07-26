@@ -4,9 +4,10 @@ append head
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/codemirror.min.css")
     link(rel="stylesheet", href="http://codemirror.net/theme/duotone-light.css")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/codemirror.min.js")
-    script(src="http://codemirror.net/mode/perl/perl.js")
     script(src="https://codemirror.net/addon/display/autorefresh.js")
+    script(async src="https://codemirror.net/mode/clike/clike.js")
     script(src="assets/js/compiler.js")
+
 
 block compile
 
@@ -23,7 +24,7 @@ block compile
             button.btn.btn-download.btn-sm(type='button', id="saveFile") 
                 i.fas.fa-save(aria-hidden='true')
                     |  Save
-            button.btn.btn-warning.float-right.disabled.btn-sm(type='button') 
+            button.btn.btn-warning.float-right.btn-sm(type='button') 
                 i.fa.fa-cogs(aria-hidden='true')
                     |  Compile
 
@@ -49,6 +50,7 @@ block compile
             ul#editorsList.nav.nav-tabs(role='tablist')
                 li.nav-item
                     a.nav-link.active(id='plugin-default-tab', data-toggle='tab', href='#plugin-default') plugin.sma
+                    span X
                 li.nav-item#createNewInput
                     a#openEditorInput.nav-link
                         i.fa.fa-plus(aria-hidden='true') 

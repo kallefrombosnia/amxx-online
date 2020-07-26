@@ -1,0 +1,21 @@
+extends ../layout.pug
+
+block docs
+    .col-md-12.push-big
+        .card
+            .card-body
+                .row
+                    .col-3
+                        #v-pills-tab.nav.flex-column.nav-pills(role='tablist', aria-orientation='vertical')
+                            a#v-pills-home-tab.nav-link.active(data-toggle='pill', href='#v-pills-overview', role='tab', aria-selected='true') Overview
+                            a#v-pills-profile-tab.nav-link(data-toggle='pill', href='#v-pills-usage', role='tab', aria-selected='false') Usage
+                            a#v-pills-messages-tab.nav-link(data-toggle='pill', href='#v-pills-faq', role='tab', aria-selected='false') FAQ
+                            a#v-pills-settings-tab.nav-link(data-toggle='pill', href='#v-pills-api', role='tab', aria-selected='false') API
+                            a#v-pills-settings-tab.nav-link(data-toggle='pill', href='#v-pills-tos', role='tab', aria-selected='false') ToS
+                    .col-9
+                        #v-pills-tabContent.tab-content
+                            #v-pills-overview.tab-pane.fade.show.active(role='tabpanel') ...
+                            #v-pills-usage.tab-pane.fade(role='tabpanel') ...
+                            #v-pills-faq.tab-pane.fade(role='tabpanel') ...
+                            #v-pills-api.tab-pane.fade(role='tabpanel') ...
+                            #v-pills-tos.tab-pane.fade(role='tabpanel') ...

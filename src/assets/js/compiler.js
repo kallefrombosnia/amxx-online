@@ -25,7 +25,7 @@ public plugin_init() {
     const editor = CodeMirror(document.querySelector(id), {
         lineNumbers: true,
         tabSize: 2,
-        mode: 'perl',
+        mode: "text/x-csrc",
         autoRefresh: true,
         theme: 'duothone-light',
         value: defaultValue
@@ -223,6 +223,7 @@ const generateNewEditor = (fileName) =>{
 
     $("#editorsList .nav-item:last").before(`<li class="nav-item">
                                                 <a class="nav-link" id="${tabName}-tab" data-toggle="tab" role="tab" aria-controls="${tabName}-panel" aria-selected="false" href="#${tabName}">${fileName}</a>
+                                                <span>X</span>
                                             </li>`);
 
     $(".tab-content").append(`<div class="tab-pane" id="${tabName}" role="tabpanel" aria-labelledby="${tabName}-tab">
@@ -234,10 +235,20 @@ const generateNewEditor = (fileName) =>{
     
     $('#newFileModal').modal('hide');
 
-    $(`#editorsList a[href="#${fileName}"]`).click();
+    $(`.nav-tabs a[href="#${fileName}"]`).tab('show');
 
     initEditor(`#${tabName}-editor`);
 
+}
+
+const closeEditorTab = () =>{
+
+    $(".nav-tabs").on("click", "span", function () {
+        const anchor = $(this).siblings('a');
+        $(anchor.attr('href')).remove();
+        $(this).parent().remove();
+        $(".nav-tabs li").children('a').first().click();
+    });
 }
 
 const saveFile = () => {
@@ -259,6 +270,28 @@ const saveFile = () => {
     };
 };
 
+const submitPlugin = async (url, data={}) =>{
+    
+    // Default options are marked with *
+    const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'same-origin', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    
+    return response.json(); // parses JSON response into native JavaScript objects     
+};
+
+const formPluginRequest = () =>{
+    
+}
+
 window.onload = () =>{
     initEditor();
     includeCheck();
@@ -266,6 +299,8 @@ window.onload = () =>{
     checkAlreadyCachedInc();
     openNewPluginEditor();
     checkUrl();
+    closeEditorTab();
     saveFile();
+    submitPlugin();
 }
 
