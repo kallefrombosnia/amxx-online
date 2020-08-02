@@ -2,10 +2,10 @@ extends ../layout.pug
 
 append head
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/codemirror.min.css")
-    link(rel="stylesheet", href="http://codemirror.net/theme/duotone-light.css")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/codemirror.min.js")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.42.2/theme/eclipse.min.css")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.42.2/codemirror.min.js")
     script(src="https://codemirror.net/addon/display/autorefresh.js")
-    script(async src="https://codemirror.net/mode/clike/clike.js")
+    script(async src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.42.2/mode/clike/clike.min.js")
     script(src="assets/js/compiler.js")
 
 
@@ -14,7 +14,7 @@ block compile
     .row
         .col-md-12 
             .messages
-        .col-md-12.push-big
+        .col-md-9.push-big
             button.btn.btn-success.action-button.btn-sm(type='button', id="openEditorInputButton")
                 i.fa.fa-plus(aria-hidden='true') 
                     |  New
@@ -26,8 +26,16 @@ block compile
                     |  Save
             button.btn.btn-warning.float-right.btn-sm(type='button') 
                 i.fa.fa-cogs(aria-hidden='true')
-                    |  Compile
-
+                    |  Compile 
+    
+        .col-md-3.push-big
+            select#amxx-version(style='display:none;')
+                option(selected='') 1.8.2
+                option 1.9
+                option 1.10
+            button.btn.btn-success.action-button.btn-sm.float-right.smaFileCompileButton(type='button', style='display:none;')
+                i.fa.fa-cogs(aria-hidden='true')
+                    |  Compile file
 
             #newFileModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                 .modal-dialog(role='document')
@@ -38,8 +46,13 @@ block compile
                             span(aria-hidden='true') ×
                         .modal-body
                             form
+                                label Select AMXX version 
+                                select#amxx-version-modal.form-group.float-right
+                                    option(selected='') 1.8.2
+                                    option 1.9
+                                    option 1.10
                                 .form-group
-                                    label.col-form-label(for='recipient-name') Name: (use .inc to specify include, default .sma)
+                                    label.col-form-label Name: (use .inc to specify include, default .sma)
                                     input#newFileName.form-control(type='text', required)
                         .modal-footer
                             button.btn.btn-secondary(type='button', data-dismiss='modal') Close

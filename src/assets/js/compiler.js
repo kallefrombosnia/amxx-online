@@ -1,7 +1,9 @@
 
 let files = null;
 let editors = [];
+let smaFiles = [];
 
+const domain = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 
 const initEditor = (id = '#plugin-default-editor')=>{
 
@@ -27,7 +29,7 @@ public plugin_init() {
         tabSize: 2,
         mode: "text/x-csrc",
         autoRefresh: true,
-        theme: 'duothone-light',
+        theme: 'eclipse',
         value: defaultValue
 
     });
@@ -106,8 +108,6 @@ const checkAlreadyCachedInc = () =>{
     for (let i = 0; i < length; i++) {
 
         const include = JSON.parse(values[i]);
-
-        console.log(JSON.parse(values[i]))
 
         if(include.name.includes('.inc')){
             $("#cachedIncList").append(`<span class="incItem" id="inc-${i}">${include.name}<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="removeCachedInc(${i});"><span aria-hidden="true">&times;</span></button></span>`);
@@ -235,7 +235,7 @@ const generateNewEditor = (fileName) =>{
     
     $('#newFileModal').modal('hide');
 
-    $(`.nav-tabs a[href="#${fileName}"]`).tab('show');
+    $(`.nav-tabs a[href="#${tabName}"]`).tab('show');
 
     initEditor(`#${tabName}-editor`);
 
@@ -261,35 +261,91 @@ const saveFile = () => {
         const fileName = $(`#${id}-tab`).text();
         const a = document.createElement('a');
         const file = new Blob([value], {type: 'text/plain'});
-    
         a.href = URL.createObjectURL(file);
         a.download = fileName;
         a.click();
         URL.revokeObjectURL(a.href)
-    
     };
 };
 
-const submitPlugin = async (url, data={}) =>{
+const sendData = async (path, data = {}) =>{
+
+    const url = domain + path;
     
-    // Default options are marked with *
     const response = await fetch(url, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'same-origin', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
+        method: 'POST', 
+        mode: 'cors', 
+        cache: 'no-cache', 
+        headers: {'Content-Type': 'application/json'},
+        referrerPolicy: 'same-origin',
+        body: JSON.stringify(data)
     });
     
     return response.json(); // parses JSON response into native JavaScript objects     
 };
 
-const formPluginRequest = () =>{
+const formPluginRequest = async () =>{
+
+    document.getElementById('smaFile').onchange = function() {
+
+        $('.smaFileCompileButton').show();
+        $('#amxx-version').show();
+
+        smaFiles = this.files;
+   
+    };
+
+    document.getElementsByClassName('smaFileCompileButton')[0].onclick = function(){
+
+        if (smaFiles.length === 0) {
+            console.log('No file is selected');
+            return;
+        }
+
+        // get amxx version default 1.8.2 as stable build
+        const version = $("#amxx-version option:selected").text();
+        
+        const bodyData = {
+            includes: [],
+            plugin: [],
+            version: version
+        };
+
+        const includeItems = { ...localStorage };
+
+        const length = Object.keys(includeItems).length;
+        const values = Object.values(includeItems);
     
+        for (let i = 0; i < length; i++) {
+    
+            const include = JSON.parse(values[i]);
+    
+            if(include.name.includes('.inc') && include.active === true){
+              bodyData.includes.push({'incName': include.name, 'value': include.value});
+            }
+  
+        }
+
+        // init new file reader
+        const reader = new FileReader();
+
+        // read uploaded sma file 
+        reader.readAsText(smaFiles[0]);
+
+        // get file name
+        const smaName = $('#smaFile').val().split('\\').pop();
+
+        // wait to browser load file
+        reader.onload = (event) => {
+            // append data to the body
+            bodyData.plugin.push({'pluginName': smaName, 'value': event.target.result});  
+            
+            sendData('/api/compile', bodyData).then(answer =>{
+                console.log(answer)
+            });
+        };
+        
+    } 
 }
 
 window.onload = () =>{
@@ -301,6 +357,6 @@ window.onload = () =>{
     checkUrl();
     closeEditorTab();
     saveFile();
-    submitPlugin();
+    formPluginRequest();
 }
 

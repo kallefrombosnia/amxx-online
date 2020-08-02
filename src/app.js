@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
 
 global.config = require('../config.json');
 
@@ -14,14 +13,17 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/assets', express.static(path.join(__dirname, 'assets')))
 
 // Use body parser
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // json format output
 app.set('json spaces', 2)
 
 // Set rendering enginel current pugjs
 app.set('view engine', 'pug');
+
+// Prevent signed header by express etc
+app.disable('x-powered-by')
 
 
 /*
@@ -38,7 +40,7 @@ app.use(require('./routes/public/compileRouter'));
 app.use(require('./routes/public/docsRouter'));
 
 // Use docs route handler
-app.use(require('./routes/public/apiRouter'));
+app.use('/api', require('./routes/public/apiRouter'));
 
 // Start app and listen on web port
 app.listen(config.WEB_PORT, () =>{
