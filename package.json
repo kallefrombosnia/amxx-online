@@ -7,11 +7,12 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "gist-client": "^1.1.1",
+    "lowdb": "^1.0.0",
     "pug": "^3.0.0"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "cd ./src && nodemon app"
+    "start": "cd ./src && nodemon --ignore db.json app"
   },
   "repository": {
     "type": "git",
