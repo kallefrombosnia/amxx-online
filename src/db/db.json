@@ -1,5 +1,7 @@
 {
   "compiles": [],
   "total_compile_times": 0,
-  "total_compile_time": 0
+  "total_compile_time": 0,
+  "log_error": [],
+  "log_success": []
 }

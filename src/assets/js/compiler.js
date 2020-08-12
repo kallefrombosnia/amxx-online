@@ -281,7 +281,7 @@ const sendData = async (path, data = {}) =>{
         body: JSON.stringify(data)
     });
     
-    return response.json(); // parses JSON response into native JavaScript objects     
+    return response.text(); // parses JSON response into native JavaScript objects     
 };
 
 const formPluginRequest = async () =>{
