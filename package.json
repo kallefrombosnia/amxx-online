@@ -12,7 +12,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "cd ./src && nodemon --ignore db.json app"
+    "start": "cd ./src && nodemon --ignore db.json app",
+    "db-reset": "node reset-db.js"
   },
   "repository": {
     "type": "git",
