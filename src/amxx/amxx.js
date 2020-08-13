@@ -20,11 +20,22 @@ class AMXX extends EventEmitter{
         // Listen for error events
         this.on('error', async err =>{
             await db.get('log_error').push({name: err.name, customtext: err.text, error: err.error}).write();
-            const logs = db.get('log_error').value();
-
-            console.log(logs)
         });
        
+    }
+
+    /*
+        compilePlugin(plugin_name)
+
+        parsed_name - parsed filename with id
+        plugin_value - plugin which needs to be proccessed
+
+        Process plugin into specific version of amx 
+
+    */
+
+    compilePlugin(plugin_name, version){ 
+     
     }
 
     /*
@@ -39,7 +50,7 @@ class AMXX extends EventEmitter{
 
     processPlugin(name, plugin_value){ 
         try {
-            this.createFileFromString(name, plugin_value);     
+            this.createFileFromString(name, plugin_value);      
         } catch (error) {
             this.emit('error', {name: 'plugin_file_save', text: 'there was an problem with saving plugin', error})
         }
