@@ -1,15 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const AMXX_Object = require('../../amxx/amxx');
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync');
-
-
-const adapter = new FileSync('db/db.json')
-
-const db = low(adapter);
-
-db.defaults({ compiles: [], total_compile_times: 0, total_compile_time: 0, log_error: [], log_success: []}).write();
 
 const amxx = new AMXX_Object();
 
@@ -36,6 +27,36 @@ router.get('/info', (req, res, next) =>{
 });
 
 router.post('/compile', (req, res, next) =>{
+
+    amxx.once('compile_end_good', compile =>{
+
+        if(req.body.download_after_finish && req.body.download_after_finish === true){
+
+            return res.download(compile.plugin_path, compile.plugin_name, err =>{
+                console.log('there was error while sending compiled plugin', err)
+            })
+        }
+
+        // Emit event to clean plugin files 
+        amxx.emit('cleanup_files', compile.plugin_id);
+
+        return res.status(200).json({
+            "status_code": 200,
+            "message": "Plugin is succesfully compiled",
+            "output_log": compile.output_log,
+            "elapsed_time": compile.elapsed_time,
+            "plugin_id": compile.plugin_id
+        });
+    });
+
+    amxx.once('compile_end_bad', compile =>{
+        return res.status(400).json({
+            "status_code": 400,
+            "message": "Plugin is not succesfully compiled",
+            "output_log": compile.output_log,
+            "elapsed_time": compile.elapsed_time
+        });
+    });
 
     // Get values from body
     const {version, plugin, includes} = req.body;
@@ -103,24 +124,24 @@ router.post('/compile', (req, res, next) =>{
         });
     }
 
+    // Plugin paths
     const pluginName = plugin[0].pluginName;
-
     const pluginPath = `${process.cwd()}/amxx/${version}/${pluginName}`;
          
-    // Proccess .inc file  
+    // Proccess .sma file  
     amxx.processPlugin(pluginPath, plugin[0].value, version);
 
-
-    db.get('compiles').push({
+    // Save file names 
+    global.db.get('compiles').push({
         id,
         includes: tempIncNameArray,
-        plugin: pluginName
-    })
-    
+        plugin: pluginPath
+    }).write();
+
+    // Call compile function
+    amxx.compilePlugin(pluginName, version, id);
 
 
-
-    
 });
 
 module.exports = router;

@@ -1,5 +1,30 @@
 {
-  "compiles": [],
+  "compiles": [
+    {
+      "id": "8fc23370c051a16d899474e3cc5b626dccbd8631",
+      "includes": [
+        "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/include/fake_queries.inc",
+        "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/include/amxconst.inc"
+      ],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/aim_botz.sma"
+    },
+    {
+      "id": "af26659bd0d3d83bbac28948e259480acd1293f9",
+      "includes": [
+        "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/include/fake_queries.inc",
+        "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/include/amxconst.inc"
+      ],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/aim_botz.sma"
+    },
+    {
+      "id": "f3e27ee70489cf09a3b08eb27b10b1c0ed84d2d5",
+      "includes": [
+        "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/include/fake_queries.inc",
+        "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/include/amxconst.inc"
+      ],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/aim_botz.sma"
+    }
+  ],
   "total_compile_times": 0,
   "total_compile_time": 0,
   "log_error": [],

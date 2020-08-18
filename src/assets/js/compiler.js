@@ -290,6 +290,9 @@ const formPluginRequest = async () =>{
 
         $('.smaFileCompileButton').show();
         $('#amxx-version').show();
+        $('#amxVerLabel').show();
+        $('#download').show();
+        $('#downloadLabel').show();
 
         smaFiles = this.files;
    
@@ -304,11 +307,14 @@ const formPluginRequest = async () =>{
 
         // get amxx version default 1.8.2 as stable build
         const version = $("#amxx-version option:selected").text();
+
+        const download_after_finish = $('#download').is(':checked')
         
         const bodyData = {
             includes: [],
             plugin: [],
-            version: version
+            version: version,
+            download_after_finish
         };
 
         const includeItems = { ...localStorage };

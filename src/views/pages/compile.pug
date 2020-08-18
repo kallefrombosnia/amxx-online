@@ -29,13 +29,21 @@ block compile
                     |  Compile 
     
         .col-md-3.push-big
-            select#amxx-version(style='display:none;')
-                option(selected='') 1.8.2
-                option 1.9.0
-                option 1.10
-            button.btn.btn-success.action-button.btn-sm.float-right.smaFileCompileButton(type='button', style='display:none;')
-                i.fa.fa-cogs(aria-hidden='true')
-                    |  Compile file
+            form
+                .form-group
+                    label#amxVerLabel(style='display:none;') AMXX version
+                    select#amxx-version(style='display:none;')
+                        option(selected='') 1.8.2
+                        option 1.9.0
+                        option 1.10
+
+                .form-check
+                    input#download.form-check-input(type='checkbox', style='display:none;')
+                    label.form-check-label#downloadLabel(for='download', style='display:none;') Download after finish
+
+                button.btn.btn-success.action-button.btn-sm.float-right.smaFileCompileButton.push-small(type='button', style='display:none;')
+                    i.fa.fa-cogs(aria-hidden='true')
+                        |  Compile file
 
             #newFileModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                 .modal-dialog(role='document')
