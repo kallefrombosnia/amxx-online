@@ -16,7 +16,7 @@ class AMXX extends EventEmitter{
 
         // Listen for error events
         this.on('error', async err =>{
-            await this.db.get('log_error').push({name: err.name, customtext: err.text, error: err.error}).write();
+            await this.db.get('log_error').push({name: err.name, customtext: err.customtext, error: err.error}).write();
         });
 
         this.output_log = null;
@@ -26,14 +26,25 @@ class AMXX extends EventEmitter{
 
             if(!this.checkCompilationOutputErrors(this.output_log)){
                 
+                // Move compiled plugin from amx path to plugins folder
                 fs.rename(event.old_plugin_path, event.new_plugin_path, (err) => {
                     if (err) throw err;
                     console.log('move complete!');
                 });
 
+                // Update statistic
+                this.db.update('total_compile_times', count => count + 1).write();
+                console.log(this.elapsed_time)
+                this.db.update('total_compile_time', time => (parseFloat(time) + parseFloat(this.elapsed_time)).toFixed(2)).write();
+
+                // Emit success event
                 this.emit('compile_end_good', {output_log: this.output_log, elapsed_time: this.elapsed_time, plugin_path: event.plugin_path, plugin_name: event.plugin_name, plugin_id: event.plugin_id});
             
             }else{
+                // Update statistic
+                this.db.update('total_compile_time', time => time + this.elapsed_time).write();
+
+                // Emite error event
                 this.emit('compile_end_bad', {output_log: this.output_log, elapsed_time: this.elapsed_time});
             }
         });
@@ -118,17 +129,21 @@ class AMXX extends EventEmitter{
 
             // Delete includes 
             if(files.includes && files.includes.length > 0){
-                files.includes.forEach( include => {                   
-                    fs.unlink(include, err =>{
-                        if (err) this.db.get('log_error').push({name: 'delete_file', customtext: 'Error while deleting includes file', error: err}).write();
-                    })
+                files.includes.forEach( include => {
+                    fs.exists(include, (exists) => {
+                        if (exists) {
+                            fs.unlink(include, err =>{
+                                if (err) this.emit('error', {name: 'delete_file', customtext: 'Error while deleting includes file', error: err});
+                            })
+                        }
+                    });                   
                 });
             }
 
             // Delete plugin
             if(files.plugin){
                 fs.unlink(files.plugin, err =>{
-                    if (err) this.db.get('log_error').push({name: 'delete_file', customtext: 'Error while deleting plugin file', error: err}).write();
+                    if (err) this.emit('error', {name: 'delete_file', customtext: 'Error while deleting plugin file', error: err});
                 })
             }
 
@@ -187,7 +202,7 @@ class AMXX extends EventEmitter{
     createFileFromString(name, string){  
 
         fs.writeFile(name, string, (err) =>{   
-            return new Error('Cannot write the file', err);
+            return this.emit('error', {name: 'delete_file', customtext: 'Error while creating file from string', error: err});
         });
         
         return;

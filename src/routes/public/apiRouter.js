@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
+const fs = require('fs');
 const AMXX_Object = require('../../amxx/amxx');
 
 const amxx = new AMXX_Object();
@@ -30,13 +32,6 @@ router.post('/compile', (req, res, next) =>{
 
     amxx.once('compile_end_good', compile =>{
 
-        if(req.body.download_after_finish && req.body.download_after_finish === true){
-
-            return res.download(compile.plugin_path, compile.plugin_name, err =>{
-                console.log('there was error while sending compiled plugin', err)
-            })
-        }
-
         // Emit event to clean plugin files 
         amxx.emit('cleanup_files', compile.plugin_id);
 
@@ -60,8 +55,6 @@ router.post('/compile', (req, res, next) =>{
 
     // Get values from body
     const {version, plugin, includes} = req.body;
-    
-    //console.log(req.body)
 
     // Check if version is set, if not return bad request status code and error message
     if(!version){
@@ -99,6 +92,8 @@ router.post('/compile', (req, res, next) =>{
     // Save includes
     if(includes && includes.length > 0){
 
+        console.log('length', includes.length)
+
         includes.forEach(include =>{
 
             //const fileName = amxx.filePathGenerator(id, include.incName);
@@ -135,13 +130,73 @@ router.post('/compile', (req, res, next) =>{
     global.db.get('compiles').push({
         id,
         includes: tempIncNameArray,
-        plugin: pluginPath
+        plugin: pluginPath,
+        plugin_name: pluginName
     }).write();
 
     // Call compile function
     amxx.compilePlugin(pluginName, version, id);
 
 
+});
+
+router.get('/download/:id', (req, res) =>{
+
+    const id = req.params.id;
+
+    // Check if id exists
+    if(!id){        
+        return res.status(400).json({
+            "status_code": 400,
+            "message": "Valid plugin id is required.",
+        });
+    }
+
+    // Get info from db; find by id 
+    const pluginInfo = global.db.get('compiles').find({ id }).value();
+
+    // Check if record id exists
+    if(pluginInfo){
+
+        // Get plugin name and path 
+        const pluginName = `${id}.amxx`;
+        const pluginPath = path.join(global.config.AMXX_PATH + '/plugins/' + pluginName);
+
+        // Name of the compiled plugin 
+        const fileName = pluginInfo.plugin_name.split('.')[0] + '.amxx';
+
+        // Return file download 
+        return  res.download(pluginPath, fileName, err =>{
+
+            // Check if express throws error  
+            if(err){
+                // Save error
+                this.emit('error', {name: 'delete_file', customtext: 'Error while downloading plugin file', error: err});
+            }else{
+
+                // Remove db entry
+                global.db.get('compiles').remove({id}).write()
+
+                // Remove compiled plugin
+                fs.unlink(pluginPath, err =>{
+                    if (err) amxx.emit('error', {name: 'delete_file', customtext: 'Error while deleting compiled plugin file', error: err});
+                })
+            }
+        
+        })
+    }
+
+    return res.status(404).json({
+        "status_code": 404,
+        "message": "Plugin id does not exists.",
+    });
+});
+
+router.get('*', (req, res) =>{
+    return res.status(404).json({
+        "status_code": 404,
+        "message": "Unknown route.",
+    });
 });
 
 module.exports = router;

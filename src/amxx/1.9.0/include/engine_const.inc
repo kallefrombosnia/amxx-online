@@ -1,28 +1,52 @@
-/* Engine constants
-*
-* by the AMX Mod X Development Team
-*
-* This file is provided as is (no warranties).
-*/
+// vim: set ts=4 sw=4 tw=99 noet:
+//
+// AMX Mod X, based on AMX Mod by Aleksander Naszko ("OLO").
+// Copyright (C) The AMX Mod X Development Team.
+//
+// This software is licensed under the GNU General Public License, version 3 or higher.
+// Additional exceptions apply. For full license details, see LICENSE.txt or visit:
+//     https://alliedmods.net/amxmodx-license
+
+//
+// Engine Constants
+//
 
 #if defined _engine_const_included
-  #endinput
+	#endinput
 #endif
 #define _engine_const_included
 
 #include <hlsdk_const>
 
-#define SPEAK_NORMAL	0
-#define SPEAK_MUTED		1
-#define SPEAK_ALL		2
-#define SPEAK_LISTENALL	4
+/**
+ * Flags for the [set|get]_speak() natives.
+ *
+ * @note These do not correspond to any HLSDK constants and are only relevant to
+ *       the custom functionality provided by the engine module.
+ */
+#define SPEAK_NORMAL        0 // Normal behavior, client follows alltalk rules
+#define SPEAK_MUTED         1 // Client can not talk
+#define SPEAK_ALL           2 // Client can talk to every other client
+#define SPEAK_LISTENALL     4 // Client can listen to every other client
 
-#define CAMERA_NONE		0
-#define CAMERA_3RDPERSON	1
-#define CAMERA_UPLEFT	2
-#define CAMERA_TOPDOWN	3
+/**
+ * View types for the set_view() native.
+ *
+ * @note These do not correspond to any HLSDK constants and are only relevant to
+ * 		 the custom functionality provided by the engine module.
+ */
+#define CAMERA_NONE         0
+#define CAMERA_3RDPERSON    1
+#define CAMERA_UPLEFT       2
+#define CAMERA_TOPDOWN      3
 
-/* Int */
+/**
+ * @section Entvar constants used with entity_[get|set]_* functions.
+ */
+
+/**
+ * Integers, use with entity_[get|set]_int()
+ */
 enum {
 	EV_INT_gamestate = 0,
 	EV_INT_oldbuttons,
@@ -63,7 +87,9 @@ enum {
 	EV_INT_deadflag,
 };
 
-/* Float */
+/**
+ * Floats, use with entity_[get|set]_float()
+ */
 enum {
 	EV_FL_impacttime = 0,
 	EV_FL_starttime,
@@ -104,7 +130,9 @@ enum {
 	EV_FL_fuser4,
 };
 
-/* Vector */
+/**
+ * Vectors, use with entity_[get|set]_vector()
+ */
 enum {
 	EV_VEC_origin = 0,
 	EV_VEC_oldorigin,
@@ -131,7 +159,9 @@ enum {
 	EV_VEC_vuser4,
 };
 
-/* Edict */
+/**
+ * Edicts, use with entity_[get|set]_edict()
+ */
 enum {
 	EV_ENT_chain = 0,
 	EV_ENT_dmg_inflictor,
@@ -146,7 +176,9 @@ enum {
 	EV_ENT_euser4,
 };
 
-/* String */
+/**
+ * Strings, use with entity_[get|set]_string()
+ */
 enum {
 	EV_SZ_classname = 0,
 	EV_SZ_globalname,
@@ -163,7 +195,9 @@ enum {
 	EV_SZ_weaponmodel,
 };
 
-/* Byte */
+/**
+ * Bytearrays, use with entity_[get|set]_byte()
+ */
 enum {
 	EV_BYTE_controller1 = 0,
 	EV_BYTE_controller2,
@@ -173,89 +207,104 @@ enum {
 	EV_BYTE_blending2,
 };
 
+/**
+ * @endsection
+ */
+
 #if defined _jghg_enums
-  #endinput
+	#endinput
 #endif
 #define _jghg_enums
+
+/**
+ * Used by get_global_[edict/float/int/string/vector]()
+ */
 enum {
-    // Edict
-    GL_trace_ent = 0,
 
-    // Float
-    GL_coop,
-    GL_deathmatch,
-    GL_force_retouch,
-    GL_found_secrets,
-    GL_frametime,
-    GL_serverflags,
-    GL_teamplay,
-    GL_time,
-    GL_trace_allsolid,
-    GL_trace_fraction,
-    GL_trace_inopen,
-    GL_trace_inwater,
-    GL_trace_plane_dist,
-    GL_trace_startsolid,
+	// Edict
+	GL_trace_ent = 0,
 
-    // Int
-    GL_cdAudioTrack,
-    GL_maxClients,
-    GL_maxEntities,
-    GL_msg_entity,
-    GL_trace_flags,
-    GL_trace_hitgroup,
+	// Float
+	GL_coop,
+	GL_deathmatch,
+	GL_force_retouch,
+	GL_found_secrets,
+	GL_frametime,
+	GL_serverflags,
+	GL_teamplay,
+	GL_time,
+	GL_trace_allsolid,
+	GL_trace_fraction,
+	GL_trace_inopen,
+	GL_trace_inwater,
+	GL_trace_plane_dist,
+	GL_trace_startsolid,
 
-    // String
-    GL_pStringBase,
-    GL_mapname,
-    GL_startspot,
+	// Int
+	GL_cdAudioTrack,
+	GL_maxClients,
+	GL_maxEntities,
+	GL_msg_entity,
+	GL_trace_flags,
+	GL_trace_hitgroup,
 
-    // Vector
-    GL_trace_endpos,
-    GL_trace_plane_normal,
-    GL_v_forward,
-    GL_v_right,
-    GL_v_up,
-    GL_vecLandmarkOffset,
+	// String
+	GL_pStringBase,
+	GL_mapname,
+	GL_startspot,
 
-    // Void (not supported)
-    GL_pSaveData
+	// Vector
+	GL_trace_endpos,
+	GL_trace_plane_normal,
+	GL_v_forward,
+	GL_v_right,
+	GL_v_up,
+	GL_vecLandmarkOffset,
+
+	// Void (not supported)
+	GL_pSaveData
 };
 
+
+/**
+ * Used by [get/set]_usercmd()
+ */
 enum
 {
 	usercmd_float_start,
-	usercmd_forwardmove,	// Float
-	usercmd_sidemove,		// Float
-	usercmd_upmove,		// Float
+	usercmd_forwardmove,       // Float
+	usercmd_sidemove,          // Float
+	usercmd_upmove,            // Float
 	usercmd_float_end,
 	usercmd_int_start,
-	usercmd_lerp_msec,		// short
-	usercmd_msec,			// byte
-	usercmd_lightlevel,		// byte
-	usercmd_buttons,		// unsigned short
-	usercmd_impulse,		// byte
-	usercmd_weaponselect,	// byte
-	usercmd_impact_index,	// int
+	usercmd_lerp_msec,         // short
+	usercmd_msec,              // byte
+	usercmd_lightlevel,        // byte
+	usercmd_buttons,           // unsigned short
+	usercmd_impulse,           // byte
+	usercmd_weaponselect,      // byte
+	usercmd_impact_index,      // int
 	usercmd_int_end,
 	usercmd_vec_start,
-	usercmd_viewangles,		// Vector
-	usercmd_impact_position,	// vec
+	usercmd_viewangles,        // Vector
+	usercmd_impact_position,   // vec
 	usercmd_vec_end
 };
 
-// Used by the traceresult() native.
+/**
+ * Used by the traceresult()
+ */
 enum
 {
-	TR_AllSolid,			// (int) if true, plane is not valid
-	TR_StartSolid,		// (int) if true, the initial point was in a solid area
-	TR_InOpen,		// (int)
-	TR_InWater,	// (int)
-	TR_Fraction,			// (float) time completed, 1.0 = didn't hit anything
-	TR_EndPos,			// (vector) final position
-	TR_PlaneDist,		// (float)
-	TR_PlaneNormal,		// (vector) surface normal at impact
-	TR_Hit,				// (entity) entity the surface is on
-	TR_Hitgroup			// (int) 0 == generic, non zero is specific body part
+	TR_AllSolid,       // (int) if true, plane is not valid
+	TR_StartSolid,     // (int) if true, the initial point was in a solid area
+	TR_InOpen,         // (int)
+	TR_InWater,        // (int)
+	TR_Fraction,       // (float) time completed, 1.0 = didn't hit anything
+	TR_EndPos,         // (vector) final position
+	TR_PlaneDist,      // (float)
+	TR_PlaneNormal,    // (vector) surface normal at impact
+	TR_Hit,            // (entity) entity the surface is on
+	TR_Hitgroup        // (int) 0 == generic, non zero is specific body part
 };
 

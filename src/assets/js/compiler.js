@@ -307,14 +307,11 @@ const formPluginRequest = async () =>{
 
         // get amxx version default 1.8.2 as stable build
         const version = $("#amxx-version option:selected").text();
-
-        const download_after_finish = $('#download').is(':checked')
         
         const bodyData = {
             includes: [],
             plugin: [],
-            version: version,
-            download_after_finish
+            version
         };
 
         const includeItems = { ...localStorage };
@@ -347,7 +344,14 @@ const formPluginRequest = async () =>{
             bodyData.plugin.push({'pluginName': smaName, 'value': event.target.result});  
             
             sendData('/api/compile', bodyData).then(answer =>{
+
+                const download_after_finish = $('#download').is(':checked')
+
                 console.log(answer)
+
+                if(download_after_finish && answer.status_code === 200 && answer.plugin_id){
+                    window.open(`api/download/${answer.plugin_id}`);
+                }
             });
         };
         
