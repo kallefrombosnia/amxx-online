@@ -16,13 +16,19 @@ router.get('/', (req, res, next) =>{
 
 // Serve compiler info
 router.get('/info', (req, res, next) =>{
+
+    // Get statistics from db
+    const total_compile_time = global.db.get('total_compile_time').value();
+    const total_compile_times = global.db.get('total_compile_times').value();
+
+    
     res.json({
         "status_code": 200,
         "message": "AMXX online compiler API info.",
         "info": {
-            "version": "0.1.0",
-            "total_compile_times": 1000,
-            "total_compile_seconds": 100000,
+            "version": global.config.VERSION,
+            "total_compile_times": total_compile_times,
+            "total_compile_seconds": total_compile_time,
             "amxx_versions_supported": global.config.SUPPORTED_AMXX_VERSIONS
         }
     });    
@@ -30,21 +36,34 @@ router.get('/info', (req, res, next) =>{
 
 router.post('/compile', (req, res, next) =>{
 
-    amxx.once('compile_end_good', compile =>{
+    amxx.once('compile_end_good', async compile =>{
 
         // Emit event to clean plugin files 
         amxx.emit('cleanup_files', compile.plugin_id);
+
+        // Get plugin name and path 
+        const pluginName = `${compile.plugin_id}.amxx`;
+        const pluginPath = path.join(global.config.AMXX_PATH + '/plugins/' + pluginName);
+
+        // Get plugin hashes
+        const md5 = await amxx.fileHash(pluginPath);
+        const sha256 = await amxx.fileHash(pluginPath, 'sha256');
 
         return res.status(200).json({
             "status_code": 200,
             "message": "Plugin is succesfully compiled",
             "output_log": compile.output_log,
             "elapsed_time": compile.elapsed_time,
-            "plugin_id": compile.plugin_id
+            "plugin_id": compile.plugin_id,
+            "file_hash": {
+                "md5": md5,
+                "sha256": sha256
+            }
         });
     });
 
     amxx.once('compile_end_bad', compile =>{
+        console.log('compiled bad')
         return res.status(400).json({
             "status_code": 400,
             "message": "Plugin is not succesfully compiled",

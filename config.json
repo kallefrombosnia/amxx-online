@@ -1,5 +1,6 @@
 {
     "WEB_PORT": 3000,
+    "VERSION": "0.1.0",
     "AMXX_PATH": "C:/Users/820/Desktop/code/nodejs/amxx-online/src/amxx",
     "SUPPORTED_AMXX_VERSIONS": [
         "1.8.2",

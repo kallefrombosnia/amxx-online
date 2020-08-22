@@ -281,7 +281,7 @@ const sendData = async (path, data = {}) =>{
         body: JSON.stringify(data)
     });
     
-    return response.text(); // parses JSON response into native JavaScript objects     
+    return response.json(); // parses JSON response into native JavaScript objects     
 };
 
 const formPluginRequest = async () =>{
@@ -343,19 +343,45 @@ const formPluginRequest = async () =>{
             // append data to the body
             bodyData.plugin.push({'pluginName': smaName, 'value': event.target.result});  
             
+            // Send data to backend
             sendData('/api/compile', bodyData).then(answer =>{
 
+                // Get state of checkbox
                 const download_after_finish = $('#download').is(':checked')
 
-                console.log(answer)
-
+                // Force download if user has checked Download after compile checkbox
                 if(download_after_finish && answer.status_code === 200 && answer.plugin_id){
-                    window.open(`api/download/${answer.plugin_id}`);
+                    return window.open(`api/download/${answer.plugin_id}`, '_blank');
                 }
+
+                // Show modal
+                $('#compileOutput').modal('show');
+
+                // Display output text
+                $('#compileOutput .output').text(answer.output_log);
+            
+                // Plugin is successfully compiled 
+                if(answer.plugin_id){
+
+                    $('#downloadFile').removeClass('disabled');
+
+                    // Show hashes
+                    $('#hashLabel').show();
+                    $('#md5').append(answer.file_hash.md5).show();
+                    $('#sha256').append(answer.file_hash.sha256).show();
+
+                }
+
+                document.getElementById('downloadFile').onclick = function(){
+                    return window.open(`api/download/${answer.plugin_id}`, '_blank');
+                }
+
             });
         };
         
-    } 
+    }
+
+ 
 }
 
 window.onload = () =>{

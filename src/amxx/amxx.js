@@ -34,7 +34,7 @@ class AMXX extends EventEmitter{
 
                 // Update statistic
                 this.db.update('total_compile_times', count => count + 1).write();
-                console.log(this.elapsed_time)
+            
                 this.db.update('total_compile_time', time => (parseFloat(time) + parseFloat(this.elapsed_time)).toFixed(2)).write();
 
                 // Emit success event
@@ -42,7 +42,7 @@ class AMXX extends EventEmitter{
             
             }else{
                 // Update statistic
-                this.db.update('total_compile_time', time => time + this.elapsed_time).write();
+                this.db.update('total_compile_time', time => (parseFloat(time) + parseFloat(this.elapsed_time)).toFixed(2)).write();
 
                 // Emite error event
                 this.emit('compile_end_bad', {output_log: this.output_log, elapsed_time: this.elapsed_time});
@@ -186,6 +186,44 @@ class AMXX extends EventEmitter{
         }
     }
 
+    /*
+        fileHash(path: string, algorithm: string)
+
+        path - path of the file
+        algorithm - specific algorithm which is gonna be used
+
+        Return hash of the specific file
+    */
+
+    fileHash(path, algorithm = 'md5') {
+
+        return new Promise((resolve, reject) => {
+
+          // Algorithm depends on availability of OpenSSL on platform
+          // Another algorithms: 'sha1', 'md5', 'sha256', 'sha512' ...
+          let shasum = crypto.createHash(algorithm);
+
+          try {
+            // Create file stream
+            let s = fs.ReadStream(path);
+
+            // Wait for data proccess
+            s.on('data', function (data) {
+                shasum.update(data)
+            })
+
+            // Wait for an end
+            s.on('end', function () {
+                const hash = shasum.digest('hex')
+                return resolve(hash);
+            });
+
+            } catch (error) {
+                return reject(error);
+            }
+        });
+    }
+
 
   
     /*
@@ -201,8 +239,10 @@ class AMXX extends EventEmitter{
 
     createFileFromString(name, string){  
 
-        fs.writeFile(name, string, (err) =>{   
-            return this.emit('error', {name: 'delete_file', customtext: 'Error while creating file from string', error: err});
+        fs.writeFile(name, string, (err) =>{  
+            if(err){
+                return this.emit('error', {name: 'delete_file', customtext: 'Error while creating file from string', error: err});
+            } 
         });
         
         return;

@@ -65,6 +65,26 @@ block compile
                         .modal-footer
                             button.btn.btn-secondary(type='button', data-dismiss='modal') Close
                             button.btn.btn-primary#saveNewFile(type='button') Save
+                
+            #compileOutput.modal.fade.bd-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                .modal-dialog.modal-lg
+                    .modal-content
+                        .modal-header
+                            h5.modal-title Compiler output
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        .modal-body
+                            p Output: 
+                            p.output
+
+                            p#hashLabel.push-small(style='display:none;') File hashes
+                                p#md5(style='display:none;') MD5: 
+                                p#sha256(style='display:none;') SHA256: 
+                        .modal-footer
+                            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                            button.btn.btn-primary.disabled#downloadFile(type='button') Download
+
+                            
 
 
         .col-md-9.push-small
