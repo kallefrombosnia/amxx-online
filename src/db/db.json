@@ -1,7 +1,50 @@
 {
-  "compiles": [],
-  "total_compile_times": 0,
-  "total_compile_time": 0,
+  "compiles": [
+    {
+      "id": "9e78696bb634b29ee0bc8ea082b3a71f011e305a",
+      "includes": [],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/adminchat.sma",
+      "plugin_name": "adminchat.sma"
+    },
+    {
+      "id": "26d29d70f08850572607c6e37de4ae8d0244b53d",
+      "includes": [],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/adminhelp.sma",
+      "plugin_name": "adminhelp.sma"
+    },
+    {
+      "id": "9d57f6dcf25adcb8f93c1838833c49799201fccf",
+      "includes": [],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/amxx.sma",
+      "plugin_name": "amxx.sma"
+    },
+    {
+      "id": "4cc1b2338f8657ce8fa50c1a05041f6ee44e06e5",
+      "includes": [],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/admincmd.sma",
+      "plugin_name": "admincmd.sma"
+    },
+    {
+      "id": "5490e91c8b843d31cf3c558350fbf7c68563d72d",
+      "includes": [],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/plugin.sma",
+      "plugin_name": "plugin.sma"
+    },
+    {
+      "id": "67aab874f35050185239e09a41703cd648cfe0f3",
+      "includes": [],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/connect_log.sma",
+      "plugin_name": "connect_log.sma"
+    },
+    {
+      "id": "6a3fb64abbd34f818327a18024a027d9fa6f7c74",
+      "includes": [],
+      "plugin": "C:\\Users\\820\\Desktop\\code\\nodejs\\amxx-online\\src/amxx/1.8.2/plugin.sma",
+      "plugin_name": "plugin.sma"
+    }
+  ],
+  "total_compile_times": 12,
+  "total_compile_time": "6.45",
   "log_error": [],
   "log_success": []
 }

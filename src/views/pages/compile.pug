@@ -24,7 +24,7 @@ block compile
             button.btn.btn-download.btn-sm(type='button', id="saveFile") 
                 i.fas.fa-save(aria-hidden='true')
                     |  Save
-            button.btn.btn-warning.float-right.btn-sm(type='button') 
+            button#compilePluginButton.btn.btn-warning.float-right.btn-sm(type='button') 
                 i.fa.fa-cogs(aria-hidden='true')
                     |  Compile 
     
@@ -66,7 +66,7 @@ block compile
                             button.btn.btn-secondary(type='button', data-dismiss='modal') Close
                             button.btn.btn-primary#saveNewFile(type='button') Save
                 
-            #compileOutput.modal.fade.bd-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+            #compileOutput.modal.fade.bd-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='', aria-hidden='true')
                 .modal-dialog.modal-lg
                     .modal-content
                         .modal-header
@@ -82,7 +82,8 @@ block compile
                                 p#sha256(style='display:none;') SHA256: 
                         .modal-footer
                             button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                            button.btn.btn-primary.disabled#downloadFile(type='button') Download
+                            a(href='#')
+                                button.btn.btn-success.disabled#downloadFile(type='button') Download
 
                             
 
