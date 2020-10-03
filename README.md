@@ -15,7 +15,7 @@ AMXX Online compiler provides you:
 ![Cache](https://i.imgur.com/zox86PM.png)
 
 ### Installation
-HLDS log requires [Node.js](https://nodejs.org/) v6+ to run.
+AMXX Online requires [Node.js](https://nodejs.org/) v6+ to run.
 
 Currently this project only supports Windows as working OS, but other OS can be easily implemented.
 
