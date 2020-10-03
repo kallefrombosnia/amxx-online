@@ -1,7 +1,5 @@
 # AMXX Online compiler :bomb:
 
-[![GitHub issues](https://img.shields.io/github/issues/kallefrombosnia/hlds-log)](https://github.com/kallefrombosnia/hlds-log/issues) ![npm](https://img.shields.io/npm/dw/hlds-log) [![npm version](http://img.shields.io/npm/v/hlds-log.svg?style=flat)](https://npmjs.org/package/hlds-log "View this project on npm")
-
 AMXX Online compiler is nodejs app for online compiling of .sma codes into binary .amxx 
 
 AMXX Online compiler provides you:
